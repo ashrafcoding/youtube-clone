@@ -1,13 +1,25 @@
-import { Container } from '@mui/material'
-import React from 'react'
-import CategoriesBar from '../components/CategoriesBar'
+import { Box, Container, Grid } from "@mui/material";
+import React from "react";
+import CategoriesBar from "../components/CategoriesBar";
+import Video from "../components/Video";
 
 function HomeScreen() {
   return (
-      <Container>
-          <CategoriesBar/>
-      </Container>
-  )
+    <Container>
+      <CategoriesBar />
+      <Box sx={{ flexGrow: 1 }}>
+        <Grid container spacing={2}>
+          {[...new Array(20)].map((val) => {
+            return (
+              <Grid item xs={12} sm={6} md={4} key={val}>
+                <Video />
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Box>
+    </Container>
+  );
 }
 
-export default HomeScreen
+export default HomeScreen;
