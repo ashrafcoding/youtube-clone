@@ -9,7 +9,9 @@ import {
   Toolbar,
   Box,
   AppBar,
+  Drawer,
 } from "@mui/material";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
@@ -17,6 +19,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
+import Sidebar from "./Sidebar";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -60,11 +63,15 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function Header() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  const handleOpen = () => setIsOpen((prev) => !prev);
+  const handleClickAway = () => setIsOpen(false);
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -159,18 +166,23 @@ export default function Header() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ background: "black" }}>
+      <AppBar position="static">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
+          <ClickAwayListener onClickAway={handleClickAway}>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="open drawer"
+              sx={{ mr: 2 }}
+              onClick={handleOpen}
+            >
+              <MenuIcon />
+            </IconButton>
+          </ClickAwayListener>
+          <IconButton>
+            <YouTubeIcon sx={{ color: "red", fontSize: "50px" }} />
           </IconButton>
-          <YouTubeIcon sx={{ fontSize: 60, color: "red" }} />
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
@@ -228,6 +240,10 @@ export default function Header() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
+      <Drawer open={isOpen}>
+        <Toolbar />
+        <Sidebar responsive={true} />
+      </Drawer>
     </Box>
   );
 }

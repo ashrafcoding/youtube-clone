@@ -24,7 +24,11 @@ const data = [
   { icon: ThumbUpOffAlt, text: "Liked Videos" },
 ];
 
-function Sidebar() {
+interface Props {
+  responsive?: boolean;
+}
+
+function Sidebar(props: Props) {
   return (
     <Box sx={{ color: "white" }}>
       <List>
@@ -33,12 +37,19 @@ function Sidebar() {
             <ListItem disablePadding key={item.text}>
               <ListItemButton>
                 <ListItemIcon>
-                  <item.icon sx={{ color: "white" }} />
+                  <item.icon />
                 </ListItemIcon>
-                <ListItemText
-                  primary={item.text}
-                  sx={{ display: { xs: "none", sm: "none", md: "block" } }}
-                />
+                {props.responsive ? (
+                  <ListItemText primary={item.text} sx={{ color: "black" }} />
+                ) : (
+                  <ListItemText
+                    primary={item.text}
+                    sx={{
+                      color: "black",
+                      display: { xs: "none", lg: "block" },
+                    }}
+                  />
+                )}
               </ListItemButton>
             </ListItem>
           );

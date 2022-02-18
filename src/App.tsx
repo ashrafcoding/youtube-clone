@@ -11,13 +11,11 @@ function App() {
       <Header />
       <Box
         sx={{
-          display: "flex",
           height: "100vh",
-          background: colors.blackSecondary,
-          color: "white",
+          display: "flex",
         }}
       >
-        <Sidebar />
+        <Sidebar responsive={false} />
         <HomeScreen />
       </Box>
     </div>
