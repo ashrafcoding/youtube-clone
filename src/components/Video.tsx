@@ -8,7 +8,7 @@ import {
 
 function Video() {
   return (
-      <Card >
+      <Card sx={{cursor:'pointer'}}>
         <CardMedia
           component="img"
           image="https://i.ytimg.com/vi/jS4aFq5-91M/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB50w2V-HQdXmTHv1n9UpT3_6uAJQ"
