@@ -1,9 +1,7 @@
-import React from "react";
 import { Box } from "@mui/material";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import HomeScreen from "./screens/HomeScreen";
-import { colors } from "./styles/style";
 
 function App() {
   return (
@@ -13,6 +11,7 @@ function App() {
         sx={{
           height: "100vh",
           display: "flex",
+          width: "85%",
         }}
       >
         <Sidebar responsive={false} />
