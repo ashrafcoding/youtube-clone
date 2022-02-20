@@ -1,7 +1,6 @@
 import React from "react";
 import { Chip, Stack } from "@mui/material";
 
-
 function CategoriesBar() {
   const data = [
     "All",
@@ -9,17 +8,12 @@ function CategoriesBar() {
     "Sports",
     "News",
     "Gaming",
-    "Movies",
     "Lifestyle",
     "How-to",
     "Pets",
-    "Sports",
-    "News",
-    "Gaming",
     "Movies",
     "TV",
     "Entertainment",
-    "Lifestyle",
     "Food",
     "Travel",
     "Fashion",
@@ -32,9 +26,9 @@ function CategoriesBar() {
   ];
 
   return (
-    <Stack  direction={'row'} spacing={2} sx={{overflow:'scroll', my:2 }} >
+    <Stack direction={"row"} spacing={2} sx={{ overflow: "scroll", my: 2 }}>
       {data.map((item) => (
-        <Chip key={item} label={item} variant='outlined' onClick={()=>{}} />        
+        <Chip key={item} label={item} variant="outlined" onClick={() => {}} />
       ))}
     </Stack>
   );

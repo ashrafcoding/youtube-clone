@@ -9,7 +9,7 @@ function HomeScreen() {
       <CategoriesBar />
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2}>
-          {[...new Array(20)].map((val) => {
+          {[1].map((val) => {
             return (
               <Grid item xs={12} sm={6} md={4} key={val}>
                 <Video />

@@ -1,6 +1,24 @@
 import { Box, Paper, Typography, TextField, Button } from "@mui/material";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { login } from "../redux/authAction";
+import { RootState } from "../redux/store";
 
 function SignIn() {
+  const dispatch = useDispatch();
+  const accessToken = useSelector<RootState>((state) => state.auth.accessToken);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (accessToken) {
+      navigate("/");
+    }
+  }, [accessToken, navigate]);
+
+  const handleLogin = () => {
+    dispatch(login());
+  };
   return (
     <Box
       sx={{
@@ -31,7 +49,14 @@ function SignIn() {
         <TextField
           label="Email or Phone"
           variant="outlined"
-          helperText={<Typography component='p' sx={{color:'primary.main', fontWeight:500 }}>Forgot email?</Typography>}
+          helperText={
+            <Typography
+              variant="caption"
+              sx={{ color: "primary.main", fontWeight: 500 }}
+            >
+              Forgot email?
+            </Typography>
+          }
           sx={{ width: "100%", my: 4 }}
         />
         <Typography sx={{ textAlign: "left" }}>
@@ -49,7 +74,9 @@ function SignIn() {
           }}
         >
           <Button variant="text">Create account </Button>
-          <Button variant="contained">Next</Button>
+          <Button variant="contained" onClick={handleLogin}>
+            Next
+          </Button>
         </Box>
       </Paper>
     </Box>
