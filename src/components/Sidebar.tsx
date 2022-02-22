@@ -1,3 +1,4 @@
+import { useDispatch } from "react-redux";
 import {
   Home,
   Subscriptions,
@@ -5,6 +6,7 @@ import {
   History,
   Explore,
   VideoLibrary,
+  ExitToApp,
 } from "@mui/icons-material";
 import {
   Box,
@@ -13,7 +15,9 @@ import {
   ListItemButton,
   ListItemText,
   ListItemIcon,
+  Divider,
 } from "@mui/material";
+import { logOut } from "../redux/authAction";
 
 const data = [
   { icon: Home, text: "Home" },
@@ -29,6 +33,8 @@ interface Props {
 }
 
 function Sidebar(props: Props) {
+  const dispatch = useDispatch();
+
   return (
     <Box sx={{ color: "white" }}>
       <List>
@@ -54,6 +60,25 @@ function Sidebar(props: Props) {
             </ListItem>
           );
         })}
+        <Divider />
+        <ListItem disablePadding>
+          <ListItemButton onClick={() => dispatch(logOut())}>
+            <ListItemIcon>
+              <ExitToApp />
+            </ListItemIcon>
+            {props.responsive ? (
+              <ListItemText primary="Sign Out" sx={{ color: "black" }} />
+            ) : (
+              <ListItemText
+                primary="Sign Out"
+                sx={{
+                  color: "black",
+                  display: { xs: "none", lg: "block" },
+                }}
+              />
+            )}
+          </ListItemButton>
+        </ListItem>
       </List>
     </Box>
   );

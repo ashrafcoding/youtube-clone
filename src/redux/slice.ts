@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  accessToken: null,
-  user: null,
+  accessToken: sessionStorage.getItem("access-token") || null,
+  user: sessionStorage.getItem("user") || null,
   isLoggedIn: false,
   isLoading: false,
 };
@@ -40,10 +40,18 @@ const authSlice = createSlice({
         user: action.payload.user,
       };
     },
+    signOut: (state) => {
+      return {
+        ...state,
+        isLoggedIn: false,
+        accessToken: null,
+        user: null,
+      };
+    }
   },
 });
 
 export default authSlice.reducer;
 
-export const { loginRequest, loginSuccess, loginFail, loadProfile } =
+export const { loginRequest, loginSuccess, loginFail, loadProfile, signOut} =
   authSlice.actions;

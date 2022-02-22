@@ -1,7 +1,7 @@
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { AppDispatch } from "./store";
 import auth from "../firebase";
-import { loginRequest, loginSuccess, loginFail, loadProfile } from "./slice";
+import { loginRequest, loginSuccess, loginFail, loadProfile, signOut } from "./slice";
 
 export const login = () => async (dispatch: AppDispatch) => {
   try {
@@ -14,6 +14,9 @@ export const login = () => async (dispatch: AppDispatch) => {
       name: result.user?.displayName,
       photoUrl: result.user?.photoURL,
     };
+
+    accessToken && sessionStorage.setItem("access-token", accessToken);
+    sessionStorage.setItem("user", JSON.stringify(profile));
     dispatch(loginSuccess({ accessToken, user: profile }));
     dispatch(loadProfile({ accessToken, user: profile }));
   } catch (error) {
@@ -21,3 +24,14 @@ export const login = () => async (dispatch: AppDispatch) => {
     dispatch(loginFail(error));
   }
 };
+
+export const logOut = () => async (dispatch: AppDispatch) => {
+  try {
+    await auth.signOut();
+    sessionStorage.removeItem("access-token");
+    sessionStorage.removeItem("user");
+    dispatch(signOut());
+  } catch (error) {
+    console.log(error);
+  }
+}
