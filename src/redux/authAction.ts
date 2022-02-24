@@ -1,12 +1,14 @@
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { AppDispatch } from "./store";
 import auth from "../firebase";
-import { loginRequest, loginSuccess, loginFail, loadProfile, signOut } from "./slice";
+import { loginRequest, loginSuccess, loginFail, loadProfile, signOut } from "./sliceAuth";
+
 
 export const login = () => async (dispatch: AppDispatch) => {
-  try {
+  try {    
     dispatch(loginRequest());
     const provider = new GoogleAuthProvider();
+    provider.addScope('https://www.googleapis.com/auth/youtube.force-ssl');
     const result = await signInWithPopup(auth, provider);
     const credential = GoogleAuthProvider.credentialFromResult(result);
     const accessToken = credential?.accessToken;
@@ -31,6 +33,7 @@ export const logOut = () => async (dispatch: AppDispatch) => {
     sessionStorage.removeItem("access-token");
     sessionStorage.removeItem("user");
     dispatch(signOut());
+    
   } catch (error) {
     console.log(error);
   }
