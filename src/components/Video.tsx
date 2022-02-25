@@ -8,6 +8,7 @@ type Movie = RootState["videos"]["homeVideos"][number];
 
 function Video({ video }: { video: Movie }) {
   const [iconUrl, setIconUrl] = useState();
+  const [viewCount, setViewCount] = useState(0);
   const {
     snippet: {
       channelId,
@@ -18,43 +19,41 @@ function Video({ video }: { video: Movie }) {
         medium: { url },
       },
     },
-    statistics: { viewCount },
-    contentDetails: { duration },
   } = video;
-  const durationInSeconds = moment.duration(duration).asSeconds();
-  const durationInMinutes = moment
-    .utc(durationInSeconds * 1000)
-    .format("mm:ss");
-
+ 
   useEffect(() => {
     const getIcon = async () => {
       const { data } = await axios.get(
         "https://www.googleapis.com/youtube/v3/channels",
         {
           params: {
-            part: "snippet",
+            part: "snippet,statistics",
             id: channelId,
             key: process.env.REACT_APP_YOUTUBE_API_KEY,
           },
         }
       );
-      const { items } = data;
+      const { items } = data;           
       const {
         snippet: {
           thumbnails: {
             medium: { url: iconUrl },
           },
         },
+        statistics:{viewCount}
       } = items[0];
       setIconUrl(iconUrl);
+      setViewCount(viewCount);
     };
     getIcon();
   }, [channelId]);
 
+  const views = numeral(viewCount).format("0.0a");
+  const fromNow = moment(publishedAt).fromNow();
+
   return (
-    <Card sx={{ cursor: "pointer" }}>
+    <Card sx={{ cursor: "pointer" }} >
       <CardMedia component="img" image={url} />
-      <span>{durationInMinutes}</span>
       <CardContent sx={{ display: "flex", gap: 2 }}>
         <Box sx={{ height: 40, width: 40 }}>
           <CardMedia
@@ -73,9 +72,7 @@ function Video({ video }: { video: Movie }) {
         >
           <Typography>{title}</Typography>
           <Typography component="h6">{channelTitle}</Typography>
-          <Typography variant="caption">{`${numeral(viewCount).format(
-            "0.a"
-          )} views . ${moment(publishedAt).fromNow()}`}</Typography>
+          <Typography variant="caption">{`${views} views . ${fromNow}`}</Typography>
         </Box>
       </CardContent>
     </Card>

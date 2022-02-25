@@ -7,6 +7,7 @@ const videoSlice = createSlice({
     nextPageToken: null,
     isLoading: false,
     error: null,
+    activeCategory: "All",
   },
   reducers: {
     homeVideosRequest: (state) => {
@@ -18,6 +19,7 @@ const videoSlice = createSlice({
         isLoading: false,
         homeVideos: action.payload.video,
         nextPageToken: action.payload.nextPageToken,
+        activeCategory: action.payload.search,
       };
     },
     homeVideosFail: (state, action) => {

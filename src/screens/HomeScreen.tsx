@@ -14,6 +14,7 @@ function HomeScreen() {
   }, [dispatch])
 
   const videos = useSelector((state: RootState) => state.videos.homeVideos)
+  
 
   return (
     <Container>
@@ -22,7 +23,7 @@ function HomeScreen() {
         <Grid container spacing={2}>
           { videos.map((video ) => {
             return (
-              <Grid item xs={12} sm={6} md={4} key={video['id']}>
+              <Grid item xs={12} sm={6} md={4} key={video['id']['videoId'] || video['id']}>
                 <Video video={video} />
               </Grid>
             );
