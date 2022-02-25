@@ -23,7 +23,7 @@ function HomeScreen() {
           { videos.map((video ) => {
             return (
               <Grid item xs={12} sm={6} md={4} key={video['id']}>
-                <Video />
+                <Video video={video} />
               </Grid>
             );
           })}
