@@ -1,5 +1,5 @@
 import axios from "axios";
-import { AppDispatch } from "./store";
+import { AppDispatch, RootState } from "./store";
 import { homeVideosRequest, homeVideosSuccess, homeVideosFail } from "./sliceVideo";
 
 export const getPopularVideos = () => async (dispatch: AppDispatch) => {
@@ -18,9 +18,33 @@ export const getPopularVideos = () => async (dispatch: AppDispatch) => {
       }
     );
     dispatch(homeVideosRequest())
-    dispatch(homeVideosSuccess({ video: data.items, nextPageToken: data.nextPageToken }));
+    dispatch(homeVideosSuccess({ video: data.items, nextPageToken: data.nextPageToken, category:"All" }));
   } catch (error) {
       dispatch(homeVideosFail(error));
     console.log(error);
   }
 };
+
+export const getVideosByCategory = (keyword: string) => async (dispatch: AppDispatch, getState:()=>RootState) => {
+  try {
+    const { data } = await axios.get(
+      "https://www.googleapis.com/youtube/v3/search",
+      {
+        params: {
+          part: "snippet",
+          maxResults: "20",
+          pageToken: getState().videos.nextPageToken,
+          q: keyword,
+          type: "video",
+          key: process.env.REACT_APP_YOUTUBE_API_KEY,
+          category: keyword,
+        },
+      }
+    );
+    dispatch(homeVideosRequest())
+    dispatch(homeVideosSuccess({ video: data.items, nextPageToken: data.nextPageToken, category: keyword }));
+  } catch (error) {
+      dispatch(homeVideosFail(error));
+    console.log(error);
+  }
+}
