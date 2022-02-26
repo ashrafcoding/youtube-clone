@@ -17,7 +17,6 @@ export const getPopularVideos = () => async (dispatch: AppDispatch) => {
         },
       }
     );
-    
     dispatch(homeVideosRequest())
     dispatch(homeVideosSuccess({ video: data.items, nextPageToken: data.nextPageToken, search:"All" }));
   } catch (error) {
