@@ -44,10 +44,10 @@ function Video({ video }: { video: Movie }) {
       const {
         snippet: {
           thumbnails: {
-            medium: { url: iconUrl },
+            default: { url: iconUrl },
           },
         },
-      } = items[0];
+      } = items[0];      
       setIconUrl(iconUrl);
     };
     getIcon();

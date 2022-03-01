@@ -1,14 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
+interface InitialState {
+  homeVideos: [];
+  nextPageToken: string|null;
+  activeCategory: string|null;
+  isLoading: boolean;
+  error: string|null;
+}
+
+const initialState: InitialState = {
+  homeVideos: [],
+  nextPageToken: null,
+  activeCategory: 'All',
+  isLoading: false,
+  error: null,
+};
+
 
 const videoSlice = createSlice({
   name: "video",
-  initialState: {
-    homeVideos: [],
-    nextPageToken: null,
-    isLoading: false,
-    error: null,
-    activeCategory: "All",
-  },
+  initialState,
   reducers: {
     homeVideosRequest: (state) => {
       return { ...state, isLoading: true };
