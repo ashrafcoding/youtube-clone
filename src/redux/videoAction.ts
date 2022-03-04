@@ -4,6 +4,16 @@ import { homeVideosRequest, homeVideosSuccess } from "./sliceVideo";
 
 type Movie = RootState["videos"]["homeVideos"][number];
 
+const serialized = (item: Movie) => ({
+  id: item["id"]["videoId"] || item["id"],
+  url: item["snippet"]["thumbnails"]["medium"]["url"],
+  title: item["snippet"]["title"],
+  channelId: item["snippet"]["channelId"],
+  channelTitle: item["snippet"]["channelTitle"],
+  publishedAt: item["snippet"]["publishedAt"],
+  etag: item["etag"],
+});
+
 const getIcon = async (channelId: string) => {
   const {
     data: { items },
@@ -36,24 +46,16 @@ export const getPopularVideos =
             chart: "mostPopular",
             maxResults: "4",
             regionCode: "US",
-            pageToken: getState().videos.nextPageToken ,
+            pageToken: getState().videos.nextPageToken,
             key: process.env.REACT_APP_YOUTUBE_API_KEY2,
           },
         }
       );
 
       const unresolved = data.items.map(async (item: Movie) => {
-        let obj = {
-          id: item["id"]["videoId"] || item["id"],
-          url: item["snippet"]["thumbnails"]["medium"]["url"],
-          title: item["snippet"]["title"],
-          channelId: item["snippet"]["channelId"],
-          channelTitle: item["snippet"]["channelTitle"],
-          publishedAt: item["snippet"]["publishedAt"],
-          etag: item["etag"],
-        };
+        const serializedObj = serialized(item);
         const icon = await getIcon(item["snippet"]["channelId"]);
-        return { ...obj, ...icon };
+        return { ...serializedObj, ...icon };
       });
       const movies = await Promise.all(unresolved);
 
@@ -90,17 +92,9 @@ export const getVideosByCategory =
       );
 
       const unresolved = data.items.map(async (item: Movie) => {
-        let obj = {
-          id: item["id"]["videoId"] || item["id"],
-          url: item["snippet"]["thumbnails"]["medium"]["url"],
-          title: item["snippet"]["title"],
-          channelId: item["snippet"]["channelId"],
-          channelTitle: item["snippet"]["channelTitle"],
-          publishedAt: item["snippet"]["publishedAt"],
-          etag: item["etag"],
-        };
+        const serializedObj = serialized(item);
         const icon = await getIcon(item["snippet"]["channelId"]);
-        return { ...obj, ...icon };
+        return { ...serializedObj, ...icon };
       });
       const movies = await Promise.all(unresolved);
 
