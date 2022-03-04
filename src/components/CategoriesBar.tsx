@@ -1,7 +1,7 @@
 import React from "react";
 import { Chip, Stack } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { getVideosByCategory} from "../redux/videoAction";
+import { getVideosByCategory, getPopularVideos } from "../redux/videoAction";
 function CategoriesBar() {
   const data = [
     "All",
@@ -28,14 +28,20 @@ function CategoriesBar() {
   const dispatch = useDispatch();
 
   const handleClick = (value: string) => {
-    dispatch(getVideosByCategory(value));
+    value === "All"
+      ? dispatch(getPopularVideos())
+      : dispatch(getVideosByCategory(value));
   };
-    
 
   return (
     <Stack direction={"row"} spacing={2} sx={{ overflow: "scroll", my: 2 }}>
       {data.map((item) => (
-        <Chip key={item} label={item} variant="outlined" onClick={()=>handleClick(item)} />
+        <Chip
+          key={item}
+          label={item}
+          variant="outlined"
+          onClick={() => handleClick(item)}
+        />
       ))}
     </Stack>
   );

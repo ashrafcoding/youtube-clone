@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 
 const initialState = {
-  accessToken: sessionStorage.getItem("access-token") ? sessionStorage?.getItem("user") : null,
+  accessToken: sessionStorage.getItem("access-token") ? sessionStorage?.getItem("access-token") : null,
   user: sessionStorage?.getItem("user") ? JSON.parse(sessionStorage.getItem("user") || "") : null,
   isLoggedIn: false,
   isLoading: false,
@@ -21,7 +21,7 @@ const authSlice = createSlice({
         isLoading: false,
         isLoggedIn: true,
         accessToken: action.payload.accessToken,
-        user: action.payload.user,
+        user: action.payload.user ,
       };
     },
     loginFail: (state, action) => {

@@ -1,20 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 interface InitialState {
   homeVideos: [];
-  nextPageToken: string|null;
-  activeCategory: string|null;
+  nextPageToken: string | null;
+  activeCategory: string;
   isLoading: boolean;
-  error: string|null;
+  error: string | null;
 }
 
 const initialState: InitialState = {
   homeVideos: [],
   nextPageToken: null,
-  activeCategory: 'All',
+  activeCategory: "All",
   isLoading: false,
   error: null,
 };
-
 
 const videoSlice = createSlice({
   name: "video",
@@ -27,7 +26,10 @@ const videoSlice = createSlice({
       return {
         ...state,
         isLoading: false,
-        homeVideos: action.payload.video,
+        homeVideos:
+          state.activeCategory === action.payload.category
+            ? [...state.homeVideos, ...action.payload.video]
+            : action.payload.video,
         nextPageToken: action.payload.nextPageToken,
         activeCategory: action.payload.category,
       };

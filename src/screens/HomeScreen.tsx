@@ -3,31 +3,46 @@ import { useDispatch, useSelector } from "react-redux";
 import { Box, Container, Grid } from "@mui/material";
 import CategoriesBar from "../components/CategoriesBar";
 import Video from "../components/Video";
-import { getPopularVideos } from "../redux/videoAction";
+import { getPopularVideos, getVideosByCategory } from "../redux/videoAction";
 import { RootState } from "../redux/store";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 function HomeScreen() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getPopularVideos())
-  }, [dispatch])
+    dispatch(getPopularVideos());
+  }, [dispatch]);
 
-  const videos = useSelector((state: RootState) => state.videos.homeVideos)
+  const { homeVideos, activeCategory } = useSelector(
+    (state: RootState) => state.videos
+  );
+  const fetchData = () => {
+    activeCategory === "all"
+      ? dispatch(getPopularVideos())
+      : dispatch(getVideosByCategory(activeCategory));
+  };
 
   return (
     <Container>
       <CategoriesBar />
       <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={2}>
-          { videos.map((video ) => {
-            return (
-              <Grid item xs={12} sm={6} md={4} key={video['etag']}>
-                <Video video={video} />
-              </Grid>
-            );
-          })}
-        </Grid>
+        <InfiniteScroll
+          dataLength={homeVideos.length}
+          next={fetchData}
+          hasMore={true}
+          loader={<h4>Loading...</h4>}
+        >
+          <Grid container spacing={2}>
+            {homeVideos.map((video) => {
+              return (
+                <Grid item xs={12} sm={6} md={4} key={video["id"]}>
+                  <Video video={video} />
+                </Grid>
+              );
+            })}
+          </Grid>
+        </InfiniteScroll>
       </Box>
     </Container>
   );
