@@ -7,6 +7,7 @@ import Sidebar from "./components/Sidebar";
 import HomeScreen from "./screens/HomeScreen";
 import SignIn from "./screens/SignIn";
 import {RootState} from "./redux/store";
+import WatchScreen from "./screens/WatchScreen";
 
 function Layout() {
   return (
@@ -43,6 +44,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Layout />} />
       <Route path="/signin" element={<SignIn />} />
+      <Route path="/watch/:id" element={<WatchScreen />} />
     </Routes>
   );
 }
