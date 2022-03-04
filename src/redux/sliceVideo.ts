@@ -23,12 +23,16 @@ const videoSlice = createSlice({
       return { ...state, isLoading: true };
     },
     homeVideosSuccess: (state, action) => {
+      const idList = state.homeVideos?.map((item: { id: string }) => item.id);
+      const newList = action.payload.video.filter(
+        (item: { id: string }) => !idList?.includes(item.id)
+      );
       return {
         ...state,
         isLoading: false,
         homeVideos:
           state.activeCategory === action.payload.category
-            ? [...state.homeVideos, ...action.payload.video]
+            ? [...state.homeVideos, ...newList]
             : action.payload.video,
         nextPageToken: action.payload.nextPageToken,
         activeCategory: action.payload.category,

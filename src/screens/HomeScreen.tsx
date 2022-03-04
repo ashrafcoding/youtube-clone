@@ -18,7 +18,7 @@ function HomeScreen() {
     (state: RootState) => state.videos
   );
   const fetchData = () => {
-    activeCategory === "all"
+    activeCategory === "All"
       ? dispatch(getPopularVideos())
       : dispatch(getVideosByCategory(activeCategory));
   };
