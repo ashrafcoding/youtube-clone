@@ -1,6 +1,10 @@
 import axios from "axios";
 import { AppDispatch, RootState } from "./store";
 import { homeVideosRequest, homeVideosSuccess } from "./sliceVideo";
+import {
+  selectedVideoRequest,
+  selectedVideoSuccess,
+} from "./sliceSelectedVideo";
 
 type Movie = RootState["videos"]["homeVideos"][number];
 
@@ -12,6 +16,7 @@ const serialized = (item: Movie) => ({
   channelTitle: item["snippet"]["channelTitle"],
   publishedAt: item["snippet"]["publishedAt"],
   etag: item["etag"],
+  duration: item["contentDetails"]["duration"],
 });
 
 const getIcon = async (channelId: string) => {
@@ -104,6 +109,47 @@ export const getVideosByCategory =
           video: movies,
           nextPageToken: data.nextPageToken,
           category: keyword,
+        })
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+export const getVideoById =
+  (id: string) => async (dispatch: AppDispatch, getState: () => RootState) => {
+    try {
+      const {
+        data: { items },
+      } = await axios.get("https://www.googleapis.com/youtube/v3/videos", {
+        params: {
+          part: "snippet,contentDetails,statistics",
+          id,
+          key: process.env.REACT_APP_YOUTUBE_API_KEY2,
+        },
+      });
+      const serializedObj = {
+        id: items[0]["id"],
+        title: items[0]["snippet"]["title"],
+        channelId: items[0]["snippet"]["channelId"],
+        channelTitle: items[0]["snippet"]["channelTitle"],
+        publishedAt: items[0]["snippet"]["publishedAt"],
+        etag: items[0]["etag"],
+        duration: items[0]["contentDetails"]["duration"],
+        viewCount: items[0]["statistics"]["viewCount"],
+        likeCount: items[0]["statistics"]["likeCount"],
+        dislikeCount: items[0]["statistics"]["dislikeCount"],
+        favoriteCount: items[0]["statistics"]["favoriteCount"],
+        commentCount: items[0]["statistics"]["commentCount"],
+        iconUrl: items[0]["snippet"]["thumbnails"]["medium"]["url"],
+        description: items[0]["snippet"]["description"],
+        subscriper: items[0]["snippet"]["subscriberCount"],
+      };
+
+      dispatch(selectedVideoRequest());
+      dispatch(
+        selectedVideoSuccess({
+          video: serializedObj,
         })
       );
     } catch (error) {

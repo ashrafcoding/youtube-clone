@@ -15,6 +15,10 @@ import numeral from "numeral";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { RootState } from "../redux/store";
+
+
+type Video = RootState["selectedVideo"]["video"];
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -31,16 +35,15 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   }),
 }));
 
-function VideoMeta() {
-  const [expand, setExpand] = useState(false);
-
+function VideoMeta({ video }: { video: Video }) {
+  const [expand, setExpand] = useState(false); 
   const handleExpandClick = () => {
     setExpand(!expand);
   };
 
   return (
     <Box ml={2}>
-      <Typography variant="h5">VIDEO TITLE</Typography>
+      <Typography variant="h5">{video?.channelTitle}</Typography>
       <Box
         sx={{
           display: "flex",
@@ -50,19 +53,19 @@ function VideoMeta() {
         }}
       >
         <Typography variant="body2">
-          {`${numeral(1000).format("0,a")} Views . ${moment(
-            "2020-06-5"
+          {`${numeral(video?.viewCount).format("0,a")} Views . ${moment(
+            video?.publishedAt
           ).fromNow()}`}{" "}
           views
         </Typography>
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           <Box component="span">
             <ThumbUpOffAltIcon fontSize="small" />
-            {numeral(10000).format("0,a")}
+            {numeral(video?.likeCount).format("0,a")}
           </Box>
           <Box component="span">
             <ThumbDownOffAltIcon fontSize="small" />
-            {numeral(10000).format("0,a")}
+            {numeral(video?.dislikeCount).format("0,a")}
           </Box>
         </Box>
       </Box>
@@ -75,11 +78,11 @@ function VideoMeta() {
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Avatar src="https://images.unsplash.com/photo-1593642647962-b7e7a8f8f8f5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60" />
+          <Avatar src={video?.iconUrl} />
           <Box sx={{ ml: 1 }}>
-            <Typography component="h4">USER NAME</Typography>
+            <Typography component="h4">{video?.channelTitle}</Typography>
             <Typography variant="body2">
-              {numeral(1000).format("0,a")} Subscriber
+              {numeral(10000).format("0,a")} Subscriber
             </Typography>
           </Box>
         </Box>
@@ -89,9 +92,7 @@ function VideoMeta() {
       </Box>
       <Divider />
       <Typography variant="body2">
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Labore
-        obcaecati, magnam doloremque quae non vitae optio facere totam ea nobis,
-        est atque animi vel accusantium placeat provident vero neque nemo!
+ {video?.title}
       </Typography>
       <CardActions disableSpacing>
         <ExpandMore
@@ -105,15 +106,11 @@ function VideoMeta() {
       </CardActions>
       <Collapse in={expand} timeout="auto" unmountOnExit>
         <Typography paragraph>
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nisi, alias.
-          Aut eos deleniti cum quas aliquam quibusdam? Rerum expedita optio
-          quibusdam iusto id nisi. Laborum laudantium dolor ab pariatur
-          consequuntur cumque, quasi perferendis magnam repellendus, incidunt
-          amet architecto itaque modi quidem tempore. Repellat voluptates
-          voluptatum tempora illum sit voluptatibus fugiat!
+   {video?.description}
         </Typography>
       </Collapse>
     </Box>
+    
   );
 }
 

@@ -1,26 +1,46 @@
-import {  CardMedia, Grid } from "@mui/material";
+import { CardMedia, Grid, Box } from "@mui/material";
 import Comments from "../components/Comments";
-import VideoHorizontal from "../components/VideoHorizontal";
 import VideoMeta from "../components/VideoMeta";
+import Video from "../components/Video";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { getVideoById, getPopularVideos } from "../redux/videoAction";
+import { useParams } from "react-router-dom";
 
 function WatchScreen() {
+  const { id } = useParams();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getPopularVideos());
+    id && dispatch(getVideoById(id));
+  }, [dispatch, id]);
+
+  const {
+    videos: { homeVideos },
+    selectedVideo: { video },
+  } = useSelector((state: RootState) => state);
+
   return (
     <Grid container spacing={2}>
-      <Grid item lg={8} sx={{height:'60vh',width:'100%'}}>
+      <Grid item md={8} sx={{ height: "55vh", width: "100%" }}>
         <CardMedia
           component="iframe"
-          src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+          src={`https://www.youtube.com/embed/${id}`}
           frameBorder={0}
           width="100%"
           height="100%"
-          sx={{mb:2}}
+          sx={{ mb: 2 }}
         />
-        <VideoMeta />
-        <Comments/>
+        <VideoMeta video={video} />
+        <Comments />
       </Grid>
-      <Grid item lg={4}>
-        {[...Array(10)].map(() => (
-          <VideoHorizontal />
+      <Grid item md={4}>
+        {homeVideos.map((video) => (
+          <Box key={video["id"]}>
+            <Video video={video} />
+          </Box>
         ))}
       </Grid>
     </Grid>
