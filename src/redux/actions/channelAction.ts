@@ -1,7 +1,7 @@
 import axios from "axios";
-import { AppDispatch, RootState } from "./store";
-import { channelRequest, channelSuccess } from "./sliceChannel";
-import { subscriptionSuccess } from "./sliceSubscription";
+import { AppDispatch, RootState } from "../store";
+import { channelRequest, channelSuccess } from "../slices/sliceChannel";
+import { subscriptionSuccess } from "../slices/sliceSubscription";
 
 export const getChannelDetail =
   (channelId: string) => async (dispatch: AppDispatch) => {

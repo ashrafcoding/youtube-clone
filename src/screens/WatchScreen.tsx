@@ -5,7 +5,7 @@ import Video from "../components/Video";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { getVideoById, getPopularVideos } from "../redux/videoAction";
+import { getVideoById, getPopularVideos } from "../redux/actions/videoAction";
 import { useParams } from "react-router-dom";
 
 function WatchScreen() {
@@ -18,7 +18,7 @@ function WatchScreen() {
   }, [dispatch, id]);
 
   const {
-    videos: { homeVideos },
+    videos: { homeVideos },channelDetails:{channel},
   } = useSelector((state: RootState) => state);
 
   return (
@@ -33,7 +33,7 @@ function WatchScreen() {
           sx={{ mb: 2 }}
         />
         <VideoMeta  />
-        <Comments />
+        <Comments videoId={`${channel['id']}`}/>
       </Grid>
       <Grid item md={4}>
         {homeVideos.map((video) => (

@@ -1,7 +1,7 @@
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { AppDispatch } from "./store";
-import auth from "../firebase";
-import { loginRequest, loginSuccess, loginFail, loadProfile, signOut } from "./sliceAuth";
+import { AppDispatch } from "../store";
+import auth from "../../firebase";
+import { loginRequest, loginSuccess, loginFail, loadProfile, signOut } from "../slices/sliceAuth";
 
 
 export const login = () => async (dispatch: AppDispatch) => {

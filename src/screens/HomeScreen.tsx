@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Box, Container, Grid } from "@mui/material";
 import CategoriesBar from "../components/CategoriesBar";
 import Video from "../components/Video";
-import { getPopularVideos, getVideosByCategory } from "../redux/videoAction";
+import { getPopularVideos, getVideosByCategory } from "../redux/actions/videoAction";
 import { RootState } from "../redux/store";
 import InfiniteScroll from "react-infinite-scroll-component";
 

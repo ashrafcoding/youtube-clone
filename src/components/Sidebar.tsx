@@ -17,7 +17,7 @@ import {
   ListItemIcon,
   Divider,
 } from "@mui/material";
-import { logOut } from "../redux/authAction";
+import { logOut } from "../redux/actions/authAction";
 
 const data = [
   { icon: Home, text: "Home" },

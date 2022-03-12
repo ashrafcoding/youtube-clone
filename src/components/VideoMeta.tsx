@@ -17,7 +17,7 @@ import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { RootState } from "../redux/store";
 import { useDispatch, useSelector } from "react-redux";
-import {getChannelDetail, subscriptionStatus} from "../redux/channelAction"
+import {getChannelDetail, subscriptionStatus} from "../redux/actions/channelAction"
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;

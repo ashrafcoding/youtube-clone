@@ -1,10 +1,10 @@
 import axios from "axios";
-import { AppDispatch, RootState } from "./store";
-import { homeVideosRequest, homeVideosSuccess } from "./sliceVideo";
+import { AppDispatch, RootState } from "../store";
+import { homeVideosRequest, homeVideosSuccess } from "../slices/sliceVideo";
 import {
   selectedVideoRequest,
   selectedVideoSuccess,
-} from "./sliceSelectedVideo";
+} from "../slices/sliceSelectedVideo";
 
 type Movie = RootState["videos"]["homeVideos"][number];
 

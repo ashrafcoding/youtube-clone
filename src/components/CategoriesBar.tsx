@@ -1,7 +1,7 @@
 import React from "react";
 import { Chip, Stack } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { getVideosByCategory, getPopularVideos } from "../redux/videoAction";
+import { getVideosByCategory, getPopularVideos } from "../redux/actions/videoAction";
 function CategoriesBar() {
   const data = [
     "All",

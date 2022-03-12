@@ -1,9 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import authReducer from "./sliceAuth";
-import videoReducer from "./sliceVideo";
-import selectedVideoSlice from "./sliceSelectedVideo";
-import channelSlice from "./sliceChannel";
-import subscriptionSlice from "./sliceSubscription";
+import authReducer from "./slices/sliceAuth";
+import videoReducer from "./slices/sliceVideo";
+import selectedVideoSlice from "./slices/sliceSelectedVideo";
+import channelSlice from "./slices/sliceChannel";
+import subscriptionSlice from "./slices/sliceSubscription";
+import commentsSlice from "./slices/sliceComments";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     selectedVideo: selectedVideoSlice,
     channelDetails: channelSlice,
     subscription: subscriptionSlice,
+    commentList: commentsSlice,
   },
 });
 export default store;

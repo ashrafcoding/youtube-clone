@@ -1,19 +1,23 @@
-import { Avatar, Box, Typography,Divider } from "@mui/material";
-import moment from "moment";
+import { Avatar, Box, Typography, Divider } from "@mui/material";
+import { RootState } from "../redux/store";
 
-const CommentsItem = () => {
+import moment from "moment";
+type Comment = RootState["commentList"]["comments"][number];
+
+const CommentsItem = ({ comment }: { comment: Comment }) => {
   return (
-      <>
-    <Box display="flex">
-      <Avatar src="https://picsum.photos/200" />
-      <Box>
-        <Typography variant="body2">
-          user name . {moment("2020-06-5").fromNow()}
-        </Typography>
-        <Typography variant="body2">good video</Typography>
+    <>
+      <Box display="flex">
+        <Avatar src={comment["authorProfileImageUrl"]} />
+        <Box>
+          <Typography variant="body2">
+            {comment["authorDisplayName"]} .{" "}
+            {moment(comment["publishedAt"]).fromNow()}
+          </Typography>
+          <Typography variant="body2">{comment["textDisplay"]}</Typography>
+        </Box>
       </Box>
-    </Box>
-    <Divider />
+      <Divider />
     </>
   );
 };

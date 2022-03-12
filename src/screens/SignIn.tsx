@@ -2,7 +2,7 @@ import { Box, Paper, Typography, TextField, Button } from "@mui/material";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { login } from "../redux/authAction";
+import { login } from "../redux/actions/authAction";
 import { RootState } from "../redux/store";
 
 function SignIn() {
