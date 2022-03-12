@@ -19,7 +19,6 @@ function WatchScreen() {
 
   const {
     videos: { homeVideos },
-    selectedVideo: { video },
   } = useSelector((state: RootState) => state);
 
   return (
@@ -33,7 +32,7 @@ function WatchScreen() {
           height="100%"
           sx={{ mb: 2 }}
         />
-        <VideoMeta video={video} />
+        <VideoMeta  />
         <Comments />
       </Grid>
       <Grid item md={4}>

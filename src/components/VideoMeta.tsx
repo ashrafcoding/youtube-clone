@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import {
   Box,
@@ -16,9 +16,8 @@ import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { RootState } from "../redux/store";
-
-
-type Video = RootState["selectedVideo"]["video"];
+import { useDispatch, useSelector } from "react-redux";
+import {getChannelDetail, subscriptionStatus} from "../redux/channelAction"
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -35,11 +34,22 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   }),
 }));
 
-function VideoMeta({ video }: { video: Video }) {
-  const [expand, setExpand] = useState(false); 
+function VideoMeta() {
+  const dispatch = useDispatch();
+  const [expand, setExpand] = useState(false);
   const handleExpandClick = () => {
     setExpand(!expand);
   };
+
+  const {
+    channelDetails: { channel },selectedVideo: { video },subscription: { subscribed }
+  } = useSelector((state: RootState) => state);
+  
+  useEffect(() => {   
+    video?.channelId && dispatch(getChannelDetail(video?.channelId));
+    video?.channelId && dispatch(subscriptionStatus(video?.channelId));    
+  }, [dispatch, video?.channelId]);
+
 
   return (
     <Box ml={2}>
@@ -78,22 +88,20 @@ function VideoMeta({ video }: { video: Video }) {
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Avatar src={video?.iconUrl} />
+          <Avatar src={channel?.iconUrl} />
           <Box sx={{ ml: 1 }}>
             <Typography component="h4">{video?.channelTitle}</Typography>
             <Typography variant="body2">
-              {numeral(10000).format("0,a")} Subscriber
+              {numeral(channel?.subscribers).format("0,a")} Subscriber
             </Typography>
           </Box>
         </Box>
-        <Button variant="contained" sx={{ background: "red" }}>
-          SUBSCRIBE
+        <Button variant="contained" sx={{ background: `${subscribed ? "gray" : "red"}` }}>
+          {subscribed ? "subscribed" : "Subscribe"}
         </Button>
       </Box>
       <Divider />
-      <Typography variant="body2">
- {video?.title}
-      </Typography>
+      <Typography variant="body2">{video?.title}</Typography>
       <CardActions disableSpacing>
         <ExpandMore
           expand={expand}
@@ -105,12 +113,9 @@ function VideoMeta({ video }: { video: Video }) {
         </ExpandMore>
       </CardActions>
       <Collapse in={expand} timeout="auto" unmountOnExit>
-        <Typography paragraph>
-   {video?.description}
-        </Typography>
+        <Typography paragraph>{video?.description}</Typography>
       </Collapse>
     </Box>
-    
   );
 }
 

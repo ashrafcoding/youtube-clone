@@ -26,7 +26,7 @@ const getIcon = async (channelId: string) => {
     params: {
       part: "snippet,statistics",
       id: channelId,
-      key: process.env.REACT_APP_YOUTUBE_API_KEY2,
+      key: process.env.REACT_APP_YOUTUBE_API_KEY,
     },
   });
   const {
@@ -52,7 +52,7 @@ export const getPopularVideos =
             maxResults: "4",
             regionCode: "US",
             pageToken: getState().videos.nextPageToken,
-            key: process.env.REACT_APP_YOUTUBE_API_KEY2,
+            key: process.env.REACT_APP_YOUTUBE_API_KEY,
           },
         }
       );
@@ -90,7 +90,7 @@ export const getVideosByCategory =
             pageToken: getState().videos.nextPageToken,
             q: keyword,
             type: "video",
-            key: process.env.REACT_APP_YOUTUBE_API_KEY2,
+            key: process.env.REACT_APP_YOUTUBE_API_KEY,
             category: keyword,
           },
         }
@@ -125,7 +125,7 @@ export const getVideoById =
         params: {
           part: "snippet,contentDetails,statistics",
           id,
-          key: process.env.REACT_APP_YOUTUBE_API_KEY2,
+          key: process.env.REACT_APP_YOUTUBE_API_KEY,
         },
       });
       const serializedObj = {
