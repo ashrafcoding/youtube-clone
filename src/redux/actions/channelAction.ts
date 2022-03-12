@@ -37,7 +37,7 @@ export const subscriptionStatus =
   async (dispatch: AppDispatch, getState: () => RootState) => {
     try {
       const {
-        data:{items}
+        data: { items },
       } = await axios.get(
         "https://www.googleapis.com/youtube/v3/subscriptions",
         {
@@ -47,12 +47,12 @@ export const subscriptionStatus =
             mine: "true",
             key: process.env.REACT_APP_YOUTUBE_API_KEY,
           },
-          headers:{
-              authorization:`Bearer ${getState().auth.accessToken}`
-          }
+          headers: {
+            Authorization: `Bearer ${getState().auth.accessToken}`,
+          },
         }
       );
-        dispatch(subscriptionSuccess(items.length !== 0));
+      dispatch(subscriptionSuccess(items.length !== 0));
     } catch (error) {
       console.log(error);
     }

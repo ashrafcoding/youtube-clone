@@ -4,6 +4,16 @@ import { commentsRequest, commentsSuccess } from "../slices/sliceComments";
 
 type Comment = RootState["commentList"]["comments"][number];
 
+const serialized = (comment: any) => ({
+  id: comment["id"],
+  textDisplay: comment["snippet"]["topLevelComment"]["snippet"]["textDisplay"],
+  publishedAt: comment["snippet"]["topLevelComment"]["snippet"]["publishedAt"],
+  authorDisplayName:
+    comment["snippet"]["topLevelComment"]["snippet"]["authorDisplayName"],
+  authorProfileImageUrl:
+    comment["snippet"]["topLevelComment"]["snippet"]["authorProfileImageUrl"],
+});
+
 export const getComments =
   (postId: string) => async (dispatch: AppDispatch) => {
     try {
@@ -20,21 +30,7 @@ export const getComments =
         }
       );
       const comments = items.map((comment: Comment) => {
-        return {
-          id: comment["id"],
-          textDisplay:
-            comment["snippet"]["topLevelComment"]["snippet"]["textDisplay"],
-          publishedAt:
-            comment["snippet"]["topLevelComment"]["snippet"]["publishedAt"],
-          authorDisplayName:
-            comment["snippet"]["topLevelComment"]["snippet"][
-              "authorDisplayName"
-            ],
-          authorProfileImageUrl:
-            comment["snippet"]["topLevelComment"]["snippet"][
-              "authorProfileImageUrl"
-            ],
-        };
+        return serialized(comment);
       });
       dispatch(commentsRequest());
       dispatch(commentsSuccess(comments));
@@ -70,12 +66,10 @@ export const addComment =
           },
         }
       );
-      console.log(data);
-
+      const newComment = serialized(data);
       const comments = getState().commentList.comments;
-      const newComments = [data, ...comments];
       dispatch(commentsRequest());
-      dispatch(commentsSuccess(newComments));
+      dispatch(commentsSuccess([newComment, ...comments]));
     } catch (error) {
       console.log(error);
     }

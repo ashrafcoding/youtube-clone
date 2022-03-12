@@ -18,7 +18,7 @@ function WatchScreen() {
   }, [dispatch, id]);
 
   const {
-    videos: { homeVideos },channelDetails:{channel},
+    videos: { homeVideos },
   } = useSelector((state: RootState) => state);
 
   return (
@@ -32,8 +32,8 @@ function WatchScreen() {
           height="100%"
           sx={{ mb: 2 }}
         />
-        <VideoMeta  />
-        <Comments videoId={`${channel['id']}`}/>
+        <VideoMeta />
+        <Comments videoId={`${id}`} />
       </Grid>
       <Grid item md={4}>
         {homeVideos.map((video) => (
