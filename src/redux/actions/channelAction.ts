@@ -12,7 +12,7 @@ export const getChannelDetail =
         params: {
           part: "snippet,statistics,contentDetails",
           id: channelId,
-          key: process.env.REACT_APP_YOUTUBE_API_KEY,
+          key: process.env.REACT_APP_YOUTUBE_API_KEY2,
         },
       });
       const channel = {
@@ -45,7 +45,7 @@ export const subscriptionStatus =
             part: "snippet",
             forChannelId: channelId,
             mine: "true",
-            key: process.env.REACT_APP_YOUTUBE_API_KEY,
+            key: process.env.REACT_APP_YOUTUBE_API_KEY2,
           },
           headers: {
             Authorization: `Bearer ${getState().auth.accessToken}`,

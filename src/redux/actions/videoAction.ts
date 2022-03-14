@@ -5,6 +5,10 @@ import {
   selectedVideoRequest,
   selectedVideoSuccess,
 } from "../slices/sliceSelectedVideo";
+import {
+  searchedVideosRequest,
+  searchedVideosSuccess,
+} from "../slices/sliceSearchedVideo";
 
 type Movie = RootState["videos"]["homeVideos"][number];
 
@@ -16,7 +20,7 @@ const serialized = (item: Movie) => ({
   channelTitle: item["snippet"]["channelTitle"],
   publishedAt: item["snippet"]["publishedAt"],
   etag: item["etag"],
-  duration: item["contentDetails"]["duration"],
+  duration: item["contentDetails"] ? item["contentDetails"]["duration"] : "",
 });
 
 const getIcon = async (channelId: string) => {
@@ -26,7 +30,7 @@ const getIcon = async (channelId: string) => {
     params: {
       part: "snippet,statistics",
       id: channelId,
-      key: process.env.REACT_APP_YOUTUBE_API_KEY,
+      key: process.env.REACT_APP_YOUTUBE_API_KEY2,
     },
   });
   const {
@@ -52,7 +56,7 @@ export const getPopularVideos =
             maxResults: "4",
             regionCode: "US",
             pageToken: getState().videos.nextPageToken,
-            key: process.env.REACT_APP_YOUTUBE_API_KEY,
+            key: process.env.REACT_APP_YOUTUBE_API_KEY2,
           },
         }
       );
@@ -90,7 +94,7 @@ export const getVideosByCategory =
             pageToken: getState().videos.nextPageToken,
             q: keyword,
             type: "video",
-            key: process.env.REACT_APP_YOUTUBE_API_KEY,
+            key: process.env.REACT_APP_YOUTUBE_API_KEY2,
             category: keyword,
           },
         }
@@ -125,7 +129,7 @@ export const getVideoById =
         params: {
           part: "snippet,contentDetails,statistics",
           id,
-          key: process.env.REACT_APP_YOUTUBE_API_KEY,
+          key: process.env.REACT_APP_YOUTUBE_API_KEY2,
         },
       });
       const serializedObj = {
@@ -152,6 +156,75 @@ export const getVideoById =
           video: serializedObj,
         })
       );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+export const getRelatedVideos =
+  (id: string) => async (dispatch: AppDispatch) => {
+    try {
+      const { data } = await axios.get(
+        "https://www.googleapis.com/youtube/v3/search",
+        {
+          params: {
+            part: "snippet",
+            relatedToVideoId: id,
+            maxResults: 10,
+            type: "video",
+            key: process.env.REACT_APP_YOUTUBE_API_KEY2,
+          },
+        }
+      );
+      const filtered = data.items.filter(
+        (item: { snippet: unknown }) => item.snippet
+      );
+      const unresolved = filtered.map(async (item: Movie) => {
+        const serializedObj = serialized(item);
+        const icon = await getIcon(item["snippet"]["channelId"]);
+        return { ...serializedObj, ...icon };
+      });
+      const movies = await Promise.all(unresolved);
+
+      dispatch(homeVideosRequest());
+      dispatch(
+        homeVideosSuccess({
+          video: movies,
+          nextPageToken: data.nextPageToken,
+          category: "All",
+        })
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+export const getVideosBySearch =
+  (keyword: string) => async (dispatch: AppDispatch) => {
+    try {
+      const { data } = await axios.get(
+        "https://www.googleapis.com/youtube/v3/search",
+        {
+          params: {
+            part: "snippet",
+            maxResults: "4",
+            q: keyword,
+            type: "video, channel",
+            key: process.env.REACT_APP_YOUTUBE_API_KEY2,
+            category: keyword,
+          },
+        }
+      );
+
+      const unresolved = data.items.map(async (item: Movie) => {
+        const serializedObj = serialized(item);
+        const icon = await getIcon(item["snippet"]["channelId"]);
+        return { ...serializedObj, ...icon };
+      });
+      const movies = await Promise.all(unresolved);
+
+      dispatch(searchedVideosRequest());
+      dispatch(searchedVideosSuccess(movies));
     } catch (error) {
       console.log(error);
     }

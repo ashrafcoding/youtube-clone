@@ -1,4 +1,6 @@
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
 import {
   Home,
   Subscriptions,
@@ -34,6 +36,11 @@ interface Props {
 
 function Sidebar(props: Props) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleClick = () => {
+    dispatch(logOut());
+    navigate("/");
+  };
 
   return (
     <Box sx={{ color: "white" }}>
@@ -62,7 +69,7 @@ function Sidebar(props: Props) {
         })}
         <Divider />
         <ListItem disablePadding>
-          <ListItemButton onClick={() => dispatch(logOut())}>
+          <ListItemButton onClick={handleClick}>
             <ListItemIcon>
               <ExitToApp />
             </ListItemIcon>

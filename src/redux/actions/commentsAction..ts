@@ -25,7 +25,7 @@ export const getComments =
           params: {
             part: "snippet",
             videoId: postId,
-            key: process.env.REACT_APP_YOUTUBE_API_KEY,
+            key: process.env.REACT_APP_YOUTUBE_API_KEY2,
           },
         }
       );
@@ -59,7 +59,7 @@ export const addComment =
         {
           params: {
             part: "snippet",
-            key: process.env.REACT_APP_YOUTUBE_API_KEY,
+            key: process.env.REACT_APP_YOUTUBE_API_KEY2,
           },
           headers: {
             Authorization: `Bearer ${getState().auth.accessToken}`,

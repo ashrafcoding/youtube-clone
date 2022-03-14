@@ -8,6 +8,7 @@ import HomeScreen from "./screens/HomeScreen";
 import SignIn from "./screens/SignIn";
 import { RootState } from "./redux/store";
 import WatchScreen from "./screens/WatchScreen";
+import SearchScreen from "./screens/SearchScreen";
 
 function Layout({ children }: { children: JSX.Element }) {
   return (
@@ -49,6 +50,10 @@ function App() {
       <Route
         path="/watch/:id"
         element={<Layout children={<WatchScreen />} />}
+      />
+      <Route
+        path="/search/:query"
+        element={<Layout children={<SearchScreen />} />}
       />
     </Routes>
   );
