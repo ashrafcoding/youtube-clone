@@ -31,16 +31,16 @@ function Video({ video }: { video: Movie }) {
 
   return (
     <Card
-      sx={{ cursor: "pointer", position: "relative", display: "flex" }}
+      sx={{ cursor: "pointer", position: "relative" }}
       onClick={handleClick}
     >
-      <CardMedia component="img" image={url} sx={{ width: "50%", mb: 1 }} />
+      <CardMedia component="img" image={url}  />
       <Box
-        sx={{ position: "absolute", left: "35%", top: "75%", color: "white" }}
+        sx={{ position: "absolute", right: "5%", bottom: "45%", color: "white" }}
       >
         {_duration}
       </Box>
-      <CardContent sx={{ display: "flex", gap: 2, width: "50%" }}>
+      <CardContent sx={{ display: "flex", gap: 2 }}>
         <Box sx={{ height: 30, width: 30 }}>
           <CardMedia
             sx={{ borderRadius: "50%" }}

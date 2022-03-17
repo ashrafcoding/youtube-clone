@@ -1,7 +1,7 @@
-import { CardMedia, Grid, Box } from "@mui/material";
+import { CardMedia, Grid } from "@mui/material";
 import Comments from "../components/Comments";
 import VideoMeta from "../components/VideoMeta";
-import Video from "../components/Video";
+import VideoHorizontal from "../components/VideoHorizontal";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
@@ -38,9 +38,7 @@ function WatchScreen() {
       </Grid>
       <Grid item md={4}>
         {homeVideos.map((video) => (
-          <Box key={video["id"]}>
-            <Video video={video} />
-          </Box>
+            <VideoHorizontal video={video} key={video["id"]}/>
         ))}
       </Grid>
     </Grid>

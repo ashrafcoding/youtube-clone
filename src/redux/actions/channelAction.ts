@@ -1,18 +1,19 @@
-import axios from "axios";
 import { AppDispatch, RootState } from "../store";
 import { channelRequest, channelSuccess } from "../slices/sliceChannel";
 import { subscriptionSuccess } from "../slices/sliceSubscription";
+import request from "../api";
+// import {
+//   subscriptionChannelsRequest, subscriptionChannelsSuccess} from "../slices/sliceSubscriptionChannel";
 
 export const getChannelDetail =
   (channelId: string) => async (dispatch: AppDispatch) => {
     try {
       const {
         data: { items },
-      } = await axios.get("https://www.googleapis.com/youtube/v3/channels", {
+      } = await request.get("channels", {
         params: {
           part: "snippet,statistics,contentDetails",
           id: channelId,
-          key: process.env.REACT_APP_YOUTUBE_API_KEY2,
         },
       });
       const channel = {
@@ -38,20 +39,17 @@ export const subscriptionStatus =
     try {
       const {
         data: { items },
-      } = await axios.get(
-        "https://www.googleapis.com/youtube/v3/subscriptions",
-        {
-          params: {
-            part: "snippet",
-            forChannelId: channelId,
-            mine: "true",
-            key: process.env.REACT_APP_YOUTUBE_API_KEY2,
-          },
-          headers: {
-            Authorization: `Bearer ${getState().auth.accessToken}`,
-          },
-        }
-      );
+      } = await request.get("subscriptions", {
+        params: {
+          part: "snippet",
+          forChannelId: channelId,
+          mine: "true",
+          maxResults: "10",
+        },
+        headers: {
+          Authorization: `Bearer ${getState().auth.accessToken}`,
+        },
+      });
       dispatch(subscriptionSuccess(items.length !== 0));
     } catch (error) {
       console.log(error);

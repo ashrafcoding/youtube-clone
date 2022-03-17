@@ -1,4 +1,4 @@
-import axios from "axios";
+import request from "../api";
 import { AppDispatch, RootState } from "../store";
 import { commentsRequest, commentsSuccess } from "../slices/sliceComments";
 
@@ -19,16 +19,12 @@ export const getComments =
     try {
       const {
         data: { items },
-      } = await axios.get(
-        "https://www.googleapis.com/youtube/v3/commentThreads",
-        {
-          params: {
-            part: "snippet",
-            videoId: postId,
-            key: process.env.REACT_APP_YOUTUBE_API_KEY2,
-          },
-        }
-      );
+      } = await request.get("commentThreads", {
+        params: {
+          part: "snippet",
+          videoId: postId,
+        },
+      });
       const comments = items.map((comment: Comment) => {
         return serialized(comment);
       });
@@ -53,19 +49,14 @@ export const addComment =
           },
         },
       };
-      const { data } = await axios.post(
-        "https://www.googleapis.com/youtube/v3/commentThreads",
-        obj,
-        {
-          params: {
-            part: "snippet",
-            key: process.env.REACT_APP_YOUTUBE_API_KEY2,
-          },
-          headers: {
-            Authorization: `Bearer ${getState().auth.accessToken}`,
-          },
-        }
-      );
+      const { data } = await request.post("commentThreads", obj, {
+        params: {
+          part: "snippet",
+        },
+        headers: {
+          Authorization: `Bearer ${getState().auth.accessToken}`,
+        },
+      });
       const newComment = serialized(data);
       const comments = getState().commentList.comments;
       dispatch(commentsRequest());

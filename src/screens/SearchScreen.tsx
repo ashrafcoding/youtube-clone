@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getVideosBySearch } from "../redux/actions/videoAction";
 import { RootState } from "../redux/store";
-import Video from "../components/Video";
+import VideoHorizontal from "../components/VideoHorizontal";
 
 const SearchScreen = () => {
   const { query } = useParams();
@@ -17,7 +17,7 @@ const SearchScreen = () => {
   return (
     <>
       {videos.map((video) => (
-        <Video key={video["id"]} video={video} />
+        <VideoHorizontal key={video["id"]} video={video} />
       ))}
     </>
   );

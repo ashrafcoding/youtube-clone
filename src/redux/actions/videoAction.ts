@@ -1,4 +1,3 @@
-import axios from "axios";
 import { AppDispatch, RootState } from "../store";
 import { homeVideosRequest, homeVideosSuccess } from "../slices/sliceVideo";
 import {
@@ -9,6 +8,11 @@ import {
   searchedVideosRequest,
   searchedVideosSuccess,
 } from "../slices/sliceSearchedVideo";
+import {
+  subscriptionChannelsRequest,
+  subscriptionChannelsSuccess,
+} from "../slices/sliceSubscriptionChannel";
+import request from "../api";
 
 type Movie = RootState["videos"]["homeVideos"][number];
 
@@ -26,11 +30,10 @@ const serialized = (item: Movie) => ({
 const getIcon = async (channelId: string) => {
   const {
     data: { items },
-  } = await axios.get("https://www.googleapis.com/youtube/v3/channels", {
+  } = await request.get("channels", {
     params: {
       part: "snippet,statistics",
       id: channelId,
-      key: process.env.REACT_APP_YOUTUBE_API_KEY2,
     },
   });
   const {
@@ -47,19 +50,15 @@ const getIcon = async (channelId: string) => {
 export const getPopularVideos =
   () => async (dispatch: AppDispatch, getState: () => RootState) => {
     try {
-      const { data } = await axios.get(
-        "https://www.googleapis.com/youtube/v3/videos",
-        {
-          params: {
-            part: "snippet,contentDetails,statistics",
-            chart: "mostPopular",
-            maxResults: "4",
-            regionCode: "US",
-            pageToken: getState().videos.nextPageToken,
-            key: process.env.REACT_APP_YOUTUBE_API_KEY2,
-          },
-        }
-      );
+      const { data } = await request.get("videos", {
+        params: {
+          part: "snippet,contentDetails,statistics",
+          chart: "mostPopular",
+          maxResults: "4",
+          regionCode: "US",
+          pageToken: getState().videos.nextPageToken,
+        },
+      });
 
       const unresolved = data.items.map(async (item: Movie) => {
         const serializedObj = serialized(item);
@@ -85,20 +84,16 @@ export const getVideosByCategory =
   (keyword: string) =>
   async (dispatch: AppDispatch, getState: () => RootState) => {
     try {
-      const { data } = await axios.get(
-        "https://www.googleapis.com/youtube/v3/search",
-        {
-          params: {
-            part: "snippet",
-            maxResults: "4",
-            pageToken: getState().videos.nextPageToken,
-            q: keyword,
-            type: "video",
-            key: process.env.REACT_APP_YOUTUBE_API_KEY2,
-            category: keyword,
-          },
-        }
-      );
+      const { data } = await request.get("search", {
+        params: {
+          part: "snippet",
+          maxResults: "4",
+          pageToken: getState().videos.nextPageToken,
+          q: keyword,
+          type: "video",
+          category: keyword,
+        },
+      });
 
       const unresolved = data.items.map(async (item: Movie) => {
         const serializedObj = serialized(item);
@@ -125,11 +120,10 @@ export const getVideoById =
     try {
       const {
         data: { items },
-      } = await axios.get("https://www.googleapis.com/youtube/v3/videos", {
+      } = await request.get("videos", {
         params: {
           part: "snippet,contentDetails,statistics",
           id,
-          key: process.env.REACT_APP_YOUTUBE_API_KEY2,
         },
       });
       const serializedObj = {
@@ -164,18 +158,14 @@ export const getVideoById =
 export const getRelatedVideos =
   (id: string) => async (dispatch: AppDispatch) => {
     try {
-      const { data } = await axios.get(
-        "https://www.googleapis.com/youtube/v3/search",
-        {
-          params: {
-            part: "snippet",
-            relatedToVideoId: id,
-            maxResults: 10,
-            type: "video",
-            key: process.env.REACT_APP_YOUTUBE_API_KEY2,
-          },
-        }
-      );
+      const { data } = await request.get("search", {
+        params: {
+          part: "snippet",
+          maxResults: "10",
+          relatedToVideoId: id,
+          type: "video",
+        },
+      });
       const filtered = data.items.filter(
         (item: { snippet: unknown }) => item.snippet
       );
@@ -202,19 +192,15 @@ export const getRelatedVideos =
 export const getVideosBySearch =
   (keyword: string) => async (dispatch: AppDispatch) => {
     try {
-      const { data } = await axios.get(
-        "https://www.googleapis.com/youtube/v3/search",
-        {
-          params: {
-            part: "snippet",
-            maxResults: "4",
-            q: keyword,
-            type: "video, channel",
-            key: process.env.REACT_APP_YOUTUBE_API_KEY2,
-            category: keyword,
-          },
-        }
-      );
+      const { data } = await request.get("search", {
+        params: {
+          part: "snippet",
+          maxResults: "4",
+          q: keyword,
+          type: "video, channel",
+          category: keyword,
+        },
+      });
 
       const unresolved = data.items.map(async (item: Movie) => {
         const serializedObj = serialized(item);
@@ -225,6 +211,35 @@ export const getVideosBySearch =
 
       dispatch(searchedVideosRequest());
       dispatch(searchedVideosSuccess(movies));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+export const getSubscriptionChannels =
+  () => async (dispatch: AppDispatch, getState: () => RootState) => {
+    try {
+      const { data } = await request.get("subscriptions", {
+        params: {
+          part: "snippet, contentDetails",
+          mine: true,
+          maxResults: "10",
+        },
+        headers: {
+          Authorization: `Bearer ${getState().auth.accessToken}`,
+        },
+      });
+      console.log(data.items);
+
+      const unresolved = data.items.map(async (item: Movie) => {
+        const serializedObj = serialized(item);
+        const icon = await getIcon(item["snippet"]["channelId"]);
+        return { ...serializedObj, ...icon };
+      });
+      const channels = await Promise.all(unresolved);
+
+      dispatch(subscriptionChannelsRequest());
+      dispatch(subscriptionChannelsSuccess(channels));
     } catch (error) {
       console.log(error);
     }
