@@ -12,6 +12,7 @@ import {
   subscriptionChannelsRequest,
   subscriptionChannelsSuccess,
 } from "../slices/sliceSubscriptionChannel";
+import { likedVideosRequest, likedVideosSuccess } from "../slices/sliceLikedVideos";
 import request from "../api";
 
 type Movie = RootState["videos"]["homeVideos"][number];
@@ -270,3 +271,31 @@ export const getVideosBySearchChannel = async (keyword: string) => {
     console.log(error);
   }
 };
+
+export const getLikedVideos =
+  () => async (dispatch: AppDispatch, getState: () => RootState) => {
+    try {
+      dispatch(likedVideosRequest());
+      const {
+        data: { items },
+      } = await request.get("videos", {
+        params: {
+          part: "snippet, contentDetails, statistics",
+          myRating: "like",
+        },
+        headers: {
+          Authorization: `Bearer ${getState().auth.accessToken}`,
+        },
+      });
+
+      const unresolved = items.map(async (item: Movie) => {
+        const serializedObj = serialized(item);
+        const icon = await getIcon(item["snippet"]["channelId"]);
+        return { ...serializedObj, ...icon };
+      });
+      const movies = await Promise.all(unresolved);
+      dispatch(likedVideosSuccess(movies));
+    } catch (error) {
+      console.log(error);
+    }
+  };

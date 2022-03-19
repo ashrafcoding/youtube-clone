@@ -7,6 +7,7 @@ import subscriptionSlice from "./slices/sliceSubscription";
 import commentsSlice from "./slices/sliceComments";
 import searchedVideoSlice from "./slices/sliceSearchedVideo";
 import subscriptionChannels from "./slices/sliceSubscriptionChannel"
+import likedVideosSlice from "./slices/sliceLikedVideos";
 
 const store = configureStore({
   reducer: {
@@ -17,7 +18,8 @@ const store = configureStore({
     subscription: subscriptionSlice,
     commentList: commentsSlice,
     searchedVideos: searchedVideoSlice,
-    subscriptionChannels: subscriptionChannels
+    subscriptionChannels: subscriptionChannels,
+    likedVideos: likedVideosSlice,
   },
 });
 export default store;

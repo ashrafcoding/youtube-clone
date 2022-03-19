@@ -11,6 +11,7 @@ import WatchScreen from "./screens/WatchScreen";
 import SearchScreen from "./screens/SearchScreen";
 import SubscriptionScreen from "./screens/SubscriptionScreen";
 import ExploreScreen from "./screens/ExploreScreen";
+import LibraryScreen from "./screens/LibraryScreen";
 
 function Layout({ children }: { children: JSX.Element }) {
   return (
@@ -68,6 +69,10 @@ function App() {
       <Route
         path="/explore"
         element={<Layout children={<ExploreScreen />} />}
+      />
+      <Route
+        path="/library"
+        element={<Layout children={<LibraryScreen />} />}
       />
     </Routes>
   );
