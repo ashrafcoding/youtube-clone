@@ -20,7 +20,7 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import Sidebar from "./Sidebar";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -188,15 +188,16 @@ export default function Header() {
               <MenuIcon />
             </IconButton>
           </ClickAwayListener>
-          <IconButton>
-            <YouTubeIcon sx={{ color: "red", fontSize: "50px" }} />
-          </IconButton>
+          <Link to="/">
+            <IconButton>
+              <YouTubeIcon sx={{ color: "red", fontSize: "40px" }} />
+            </IconButton>
+          </Link>
           <Box component="form" onSubmit={handleSubmit}>
             <Search>
               <SearchIconWrapper>
                 <SearchIcon />
               </SearchIconWrapper>
-
               <StyledInputBase
                 placeholder="Search…"
                 inputProps={{ "aria-label": "search" }}

@@ -3,11 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { Box, Container, Grid } from "@mui/material";
 import CategoriesBar from "../components/CategoriesBar";
 import Video from "../components/Video";
-import { getPopularVideos, getVideosByCategory } from "../redux/actions/videoAction";
+import {
+  getPopularVideos,
+  getVideosByCategory,
+} from "../redux/actions/videoAction";
 import { RootState } from "../redux/store";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-function HomeScreen() {
+function HomeScreen({ show }: { show: boolean }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -25,7 +28,7 @@ function HomeScreen() {
 
   return (
     <Container>
-      <CategoriesBar />
+      {show && <CategoriesBar />}
       <Box sx={{ flexGrow: 1 }}>
         <InfiniteScroll
           dataLength={homeVideos.length}

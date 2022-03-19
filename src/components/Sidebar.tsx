@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 import {
   Home,
@@ -48,22 +48,26 @@ function Sidebar(props: Props) {
         {data.map((item) => {
           return (
             <ListItem disablePadding key={item.text}>
-              <ListItemButton>
-                <ListItemIcon>
-                  <item.icon />
-                </ListItemIcon>
-                {props.responsive ? (
-                  <ListItemText primary={item.text} sx={{ color: "black" }} />
-                ) : (
-                  <ListItemText
-                    primary={item.text}
-                    sx={{
-                      color: "black",
-                      display: { xs: "none", lg: "block" },
-                    }}
-                  />
-                )}
-              </ListItemButton>
+              <Link
+                to={`${item.text === "Home" ? "/" : item.text.toLowerCase()}`}
+              >
+                <ListItemButton>
+                  <ListItemIcon>
+                    <item.icon />
+                  </ListItemIcon>
+                  {props.responsive ? (
+                    <ListItemText primary={item.text} sx={{ color: "black" }} />
+                  ) : (
+                    <ListItemText
+                      primary={item.text}
+                      sx={{
+                        color: "black",
+                        display: { xs: "none", lg: "block" },
+                      }}
+                    />
+                  )}
+                </ListItemButton>
+              </Link>
             </ListItem>
           );
         })}

@@ -223,24 +223,50 @@ export const getSubscriptionChannels =
         params: {
           part: "snippet, contentDetails",
           mine: true,
-          maxResults: "10",
+          maxResults: "4",
         },
         headers: {
           Authorization: `Bearer ${getState().auth.accessToken}`,
         },
       });
-      console.log(data.items);
-
-      const unresolved = data.items.map(async (item: Movie) => {
-        const serializedObj = serialized(item);
-        const icon = await getIcon(item["snippet"]["channelId"]);
-        return { ...serializedObj, ...icon };
-      });
-      const channels = await Promise.all(unresolved);
-
+      const groups = data.items.map(
+        async (channel: { [x: string]: { [x: string]: string } }) => {
+          const playlist = await getVideosBySearchChannel(
+            channel["snippet"]["title"]
+          );
+          return {
+            ...channel,
+            playlist,
+          };
+        }
+      );
+      const channelsWithPlayList = await Promise.all(groups);
       dispatch(subscriptionChannelsRequest());
-      dispatch(subscriptionChannelsSuccess(channels));
+      dispatch(subscriptionChannelsSuccess(channelsWithPlayList));
     } catch (error) {
       console.log(error);
     }
   };
+
+export const getVideosBySearchChannel = async (keyword: string) => {
+  try {
+    const { data } = await request.get("search", {
+      params: {
+        part: "snippet",
+        maxResults: "4",
+        q: keyword,
+        type: "video",
+        order: "date",
+      },
+    });
+    const unresolved = data.items.map(async (item: Movie) => {
+      const serializedObj = serialized(item);
+      const icon = await getIcon(item["snippet"]["channelId"]);
+      return { ...serializedObj, ...icon };
+    });
+    const movies = await Promise.all(unresolved);
+    return movies;
+  } catch (error) {
+    console.log(error);
+  }
+};

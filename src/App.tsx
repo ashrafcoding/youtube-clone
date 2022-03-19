@@ -10,6 +10,7 @@ import { RootState } from "./redux/store";
 import WatchScreen from "./screens/WatchScreen";
 import SearchScreen from "./screens/SearchScreen";
 import SubscriptionScreen from "./screens/SubscriptionScreen";
+import ExploreScreen from "./screens/ExploreScreen";
 
 function Layout({ children }: { children: JSX.Element }) {
   return (
@@ -20,7 +21,7 @@ function Layout({ children }: { children: JSX.Element }) {
         spacing={2}
         sx={{
           height: "100vh",
-          px:2
+          px: 2,
         }}
       >
         <Grid item xs={1} lg={2}>
@@ -47,7 +48,10 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/" element={<Layout children={<HomeScreen />} />} />
+      <Route
+        path="/"
+        element={<Layout children={<HomeScreen show={true} />} />}
+      />
       <Route path="/signin" element={<SignIn />} />
       <Route
         path="/watch/:id"
@@ -58,8 +62,12 @@ function App() {
         element={<Layout children={<SearchScreen />} />}
       />
       <Route
-        path="/subscription"
+        path="/subscriptions"
         element={<Layout children={<SubscriptionScreen />} />}
+      />
+      <Route
+        path="/explore"
+        element={<Layout children={<ExploreScreen />} />}
       />
     </Routes>
   );
