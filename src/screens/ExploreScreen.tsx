@@ -1,4 +1,4 @@
-import { Typography, Container } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import { useState } from "react";
 import ExploreHead from "../components/ExploreHead";
 
@@ -10,13 +10,16 @@ const ExploreScreen = () => {
   console.log(text);
 
   return (
-    <Container>
+    <Box >
       <ExploreHead getValue={getValue} />
+      <Box p={3}>
       <Typography variant="h6" gutterBottom>
-        {text || "Trending"}
+        {text || "Trending videos"}
       </Typography>
+      </Box>
+      
       <HomeScreen show={false} />
-    </Container>
+    </Box>
   );
 };
 

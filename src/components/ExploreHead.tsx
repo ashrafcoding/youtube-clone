@@ -23,10 +23,10 @@ const ExploreHead = ({ getValue }: { getValue: (arg0: string) => void }) => {
   };
 
   return (
-    <Box display="flex" sx={{ gap: 1, flexWrap: "wrap" }}>
+    <Box display="flex" p={3} sx={{ gap: 1, flexWrap: "wrap" }} >
       {data.map((item) => (
         <Card
-          sx={{ width: "210px", p: 3 }}
+          sx={{ width: "210px", p: 3 ,cursor: "pointer"}}
           key={item.id}
           onClick={() => handleClick(item.text)}
         >

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { styled, alpha } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import {
   Menu,
   MenuItem,
@@ -10,25 +10,26 @@ import {
   Box,
   AppBar,
   Drawer,
+  Typography,
+  Avatar,
 } from "@mui/material";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import MailIcon from "@mui/icons-material/Mail";
 import YouTubeIcon from "@mui/icons-material/YouTube";
-import NotificationsIcon from "@mui/icons-material/Notifications";
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import AppsIcon from '@mui/icons-material/Apps';
 import MoreIcon from "@mui/icons-material/MoreVert";
 import Sidebar from "./Sidebar";
 import { useNavigate, Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
+  border: "1px solid grey", 
   marginRight: theme.spacing(2),
   marginLeft: 0,
   width: "100%",
@@ -49,7 +50,6 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
@@ -70,6 +70,9 @@ export default function Header() {
     React.useState<null | HTMLElement>(null);
 
   const navigate = useNavigate();
+  const photoUrl = useSelector((state:RootState) =>  state.auth?.user?.photoUrl);
+  const name = useSelector((state:RootState) =>  state.auth?.user?.name);
+  
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -138,49 +141,37 @@ export default function Header() {
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
-            <MailIcon />
-          </Badge>
+        <IconButton size="large" >
+            <AppsIcon />
         </IconButton>
-        <p>Messages</p>
+        <p>Apps</p>
       </MenuItem>
       <MenuItem>
         <IconButton
           size="large"
           aria-label="show 17 new notifications"
-          color="inherit"
         >
           <Badge badgeContent={17} color="error">
-            <NotificationsIcon />
+            <NotificationsNoneIcon />
           </Badge>
         </IconButton>
         <p>Notifications</p>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
+        <Avatar alt="Remy Sharp" src={photoUrl||null} sx={{width:"30px", height:"30px", mx:"10px"}} />
+        <p>{name|| "profile"}</p>
       </MenuItem>
     </Menu>
   );
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="static" sx={{background:"white"}}>
         <Toolbar>
           <ClickAwayListener onClickAway={handleClickAway}>
             <IconButton
               size="large"
               edge="start"
-              color="inherit"
               aria-label="open drawer"
               sx={{ mr: 2 }}
               onClick={handleOpen}
@@ -190,13 +181,14 @@ export default function Header() {
           </ClickAwayListener>
           <Link to="/">
             <IconButton>
-              <YouTubeIcon sx={{ color: "red", fontSize: "40px" }} />
+              <YouTubeIcon sx={{ color: "red", fontSize: "40px" }} />    
             </IconButton>
           </Link>
+          <Typography variant="h5" color="black">YouTube</Typography>
           <Box component="form" onSubmit={handleSubmit}>
             <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
+              <SearchIconWrapper >
+                <SearchIcon  sx={{color:"black"}}/>
               </SearchIconWrapper>
               <StyledInputBase
                 placeholder="Search…"
@@ -210,33 +202,18 @@ export default function Header() {
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <IconButton
               size="large"
-              aria-label="show 4 new mails"
-              color="inherit"
             >
-              <Badge badgeContent={4} color="error">
-                <MailIcon />
-              </Badge>
+                <AppsIcon />
             </IconButton>
             <IconButton
               size="large"
               aria-label="show 17 new notifications"
-              color="inherit"
             >
               <Badge badgeContent={17} color="error">
-                <NotificationsIcon />
+                <NotificationsNoneIcon />
               </Badge>
             </IconButton>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
+            <Avatar alt="Remy Sharp" src={photoUrl||null} sx={{width:"30px", height:"30px", mx:"10px"}}/>
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -244,9 +221,7 @@ export default function Header() {
               aria-label="show more"
               aria-controls={mobileMenuId}
               aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
+              onClick={handleMobileMenuOpen}            >
               <MoreIcon />
             </IconButton>
           </Box>

@@ -44,14 +44,15 @@ function Sidebar(props: Props) {
 
   return (
     <Box sx={{ color: "white" }}>
-      <List>
+      <List >
         {data.map((item) => {
           return (
             <ListItem disablePadding key={item.text}>
               <Link
-                to={`${item.text === "Home" ? "/" : item.text.toLowerCase()}`}
+              style={{ textDecoration: "none" }}
+                to={`${item.text === "Home" ? "/" : "/"+item.text.toLowerCase()}`}            
               >
-                <ListItemButton>
+                <ListItemButton >
                   <ListItemIcon>
                     <item.icon />
                   </ListItemIcon>

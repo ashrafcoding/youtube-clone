@@ -23,7 +23,7 @@ function WatchScreen() {
   } = useSelector((state: RootState) => state);
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={2}mt={2}>
       <Grid item md={8} sx={{ height: "55vh", width: "100%" }}>
         <CardMedia
           component="iframe"

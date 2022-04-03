@@ -39,7 +39,7 @@ function HomeScreen({ show }: { show: boolean }) {
           <Grid container spacing={2}>
             {homeVideos.map((video) => {
               return (
-                <Grid item xs={12} sm={6} md={4} key={video["id"]}>
+                <Grid item xs={12} sm={6} md={4} lg={3} key={video["id"]}>
                   <Video video={video} />
                 </Grid>
               );
