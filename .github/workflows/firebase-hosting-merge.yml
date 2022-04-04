@@ -34,3 +34,4 @@ jobs:
           args: deploy --only hosting
         env:
           FIREBASE_TOKEN: ${{secrets.FIREBASE_TOKEN}}
+          REACT_APP_YOUTUBE_API_KEY1: ${{secrets.REACT_APP_YOUTUBE_API_KEY1}}
