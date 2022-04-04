@@ -12,7 +12,6 @@ function VideoHorizontal({ video }: { video: Movie }) {
     title,
     publishedAt,
     url,
-    iconUrl,
     viewCount,
     duration,
   } = video;
@@ -35,20 +34,14 @@ function VideoHorizontal({ video }: { video: Movie }) {
       onClick={handleClick}
       elevation={0}
     >
-      <CardMedia component="img" image={url} sx={{ width: "50%", mb: 1 }} />
+      <CardMedia component="img" image={url} sx={{ width: "180px", mb: 1,height:"100px" }} />
       <Box
         sx={{ position: "absolute", left: "35%", top: "75%", color: "white" }}
       >
         {_duration}
       </Box>
-      <CardContent sx={{width:'50%'}}>
-        <Box sx={{ height: 30, width: 30 }}>
-          <CardMedia
-            sx={{ borderRadius: "50%" }}
-            component="img"
-            image={iconUrl}
-            alt="icon"
-          />
+      <CardContent >
+        <Box >
         </Box>
         <Box
           sx={{
@@ -58,8 +51,8 @@ function VideoHorizontal({ video }: { video: Movie }) {
             textOverflow: "ellipsis",
           }}
         >
-          <Typography>{title}</Typography>
-          <Typography component="h6">{channelTitle}</Typography>
+          <Typography variant="body2">{title}</Typography>
+          <Typography variant="subtitle1">{channelTitle}</Typography>
           <Typography variant="caption">{`${views} views . ${fromNow}`}</Typography>
         </Box>
       </CardContent>

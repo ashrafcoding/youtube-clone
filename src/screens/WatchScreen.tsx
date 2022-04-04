@@ -1,4 +1,4 @@
-import { CardMedia, Grid } from "@mui/material";
+import { Box, CardMedia, Divider, Grid } from "@mui/material";
 import Comments from "../components/Comments";
 import VideoMeta from "../components/VideoMeta";
 import VideoHorizontal from "../components/VideoHorizontal";
@@ -23,24 +23,30 @@ function WatchScreen() {
   } = useSelector((state: RootState) => state);
 
   return (
-    <Grid container spacing={2}mt={2}>
-      <Grid item md={8} sx={{ height: "55vh", width: "100%" }}>
+    <Grid container spacing={2} mt={2}>
+      <Grid item xs={12} md={8} mb={35}>
         <CardMedia
           component="iframe"
           src={`https://www.youtube.com/embed/${id}`}
           frameBorder={0}
           width="100%"
           height="100%"
-          sx={{ mb: 2 }}
+          sx={{ pb: "5%", maxHeight: "65vh" }}
         />
         <VideoMeta />
-        <Comments videoId={`${id}`} commentCount={`${video?.commentCount}`} />
+        <Divider />
+        <Box display={{ xs: "none", md: "block" }}>
+          <Comments videoId={`${id}`} commentCount={`${video?.commentCount}`} />
+        </Box>
       </Grid>
-      <Grid item md={4}>
+      <Grid item xs={12} md={4}>
         {homeVideos.map((video) => (
-            <VideoHorizontal video={video} key={video["id"]}/>
+          <VideoHorizontal video={video} key={video["id"]} />
         ))}
       </Grid>
+      <Box display={{ xs: "block", md: "none" }}>
+        <Comments videoId={`${id}`} commentCount={`${video?.commentCount}`} />
+      </Box>
     </Grid>
   );
 }

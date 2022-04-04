@@ -26,8 +26,8 @@ const data = [
   { icon: Explore, text: "Explore" },
   { icon: Subscriptions, text: "Subscriptions" },
   { icon: VideoLibrary, text: "Library" },
-  { icon: History, text: "History" },
   { icon: ThumbUpOffAlt, text: "Liked Videos" },
+  { icon: History, text: "History" },
 ];
 
 interface Props {

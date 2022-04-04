@@ -15,6 +15,7 @@ import numeral from "numeral";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ShareIcon from '@mui/icons-material/Share';
 import { RootState } from "../redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import {getChannelDetail, subscriptionStatus} from "../redux/actions/channelAction"
@@ -53,7 +54,7 @@ function VideoMeta() {
 
   return (
     <Box ml={2}>
-      <Typography variant="h5">{video?.channelTitle}</Typography>
+      <Typography variant="h6">{video?.title}</Typography>
       <Box
         sx={{
           display: "flex",
@@ -69,13 +70,17 @@ function VideoMeta() {
           views
         </Typography>
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-          <Box component="span">
-            <ThumbUpOffAltIcon fontSize="small" />
-            {numeral(video?.likeCount).format("0,a")}
+          <Box component="span" display="flex" gap={1}>
+            <ThumbUpOffAltIcon fontSize="medium" />
+            <Typography variant="subtitle1">{numeral(video?.likeCount).format("0,a")}</Typography>
           </Box>
-          <Box component="span">
-            <ThumbDownOffAltIcon fontSize="small" />
-            {numeral(video?.dislikeCount).format("0,a")}
+          <Box component="span" display="flex" gap={1}>
+            <ThumbDownOffAltIcon fontSize="medium" />
+            <Typography variant="subtitle1">DISLIKE</Typography>
+          </Box>
+          <Box component="span" display="flex" gap={1}>
+          <ShareIcon fontSize="medium" />
+          <Typography variant="subtitle1">SHARE</Typography>
           </Box>
         </Box>
       </Box>
@@ -87,7 +92,7 @@ function VideoMeta() {
           alignItems: "center",
         }}
       >
-        <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Box sx={{ display: "flex", alignItems: "center",py:2 }}>
           <Avatar src={channel?.iconUrl} />
           <Box sx={{ ml: 1 }}>
             <Typography component="h4">{video?.channelTitle}</Typography>
@@ -101,8 +106,7 @@ function VideoMeta() {
         </Button>
       </Box>
       <Divider />
-      <Typography variant="body2">{video?.title}</Typography>
-      <CardActions disableSpacing>
+      <CardActions disableSpacing >
         <ExpandMore
           expand={expand}
           onClick={handleExpandClick}

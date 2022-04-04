@@ -26,11 +26,11 @@ function Comments({ videoId, commentCount }: { videoId: string, commentCount:str
   }, [dispatch, videoId]);
 
   return (
-    <Box>
+    <Box ml={2}>
       <Typography variant="body1" mb={2}>{commentCount} Comments</Typography>
-      <Box display={"flex"}>
+      <Box display={"flex"} pb={1} gap={2}>
         <Avatar src={user["photoUrl"]} />
-        <Box
+        <Box     
           component="form"
           noValidate
           autoComplete="off"
@@ -47,7 +47,7 @@ function Comments({ videoId, commentCount }: { videoId: string, commentCount:str
         </Box>
       </Box>
       <Divider />
-      <Box>
+      <Box my={2}>
         {comments.map((comment) => (
           <CommentsItem key={comment["id"]} comment={comment} />
         ))}

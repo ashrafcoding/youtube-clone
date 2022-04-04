@@ -7,7 +7,7 @@ type Comment = RootState["commentList"]["comments"][number];
 const CommentsItem = ({ comment }: { comment: Comment }) => {
   return (
     <>
-      <Box display="flex">
+      <Box display="flex" py={1} gap={2}>
         <Avatar src={comment["authorProfileImageUrl"]} />
         <Box>
           <Typography variant="body2">

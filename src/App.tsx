@@ -12,8 +12,9 @@ import SearchScreen from "./screens/SearchScreen";
 import SubscriptionScreen from "./screens/SubscriptionScreen";
 import ExploreScreen from "./screens/ExploreScreen";
 import LibraryScreen from "./screens/LibraryScreen";
+import LikedScreen from "./screens/LikedScreen";
 
-function Layout({ children }: { children: JSX.Element }) {
+function Layout({ children, watch=false }: { children: JSX.Element, watch?: boolean }) {
   return (
     <>
       <Header />
@@ -25,12 +26,15 @@ function Layout({ children }: { children: JSX.Element }) {
           px: 2,
         }}
       >
+        {watch ? <Grid item xs={12} >
+          {children}
+          </Grid> :(<>
         <Grid item xs={1} lg={2}>
           <Sidebar responsive={false} />
         </Grid>
         <Grid item xs={11} lg={10}>
           {children}
-        </Grid>
+        </Grid> </>)}
       </Grid>
     </>
   );
@@ -56,7 +60,7 @@ function App() {
       <Route path="/signin" element={<SignIn />} />
       <Route
         path="/watch/:id"
-        element={<Layout children={<WatchScreen />} />}
+        element={<Layout watch={true} children={<WatchScreen />} />}
       />
       <Route
         path="/search/:query"
@@ -73,6 +77,14 @@ function App() {
       <Route
         path="/library"
         element={<Layout children={<LibraryScreen />} />}
+      />
+      <Route
+        path="/liked%20videos" 
+        element={<Layout children={<LikedScreen />} />}
+      />
+       <Route
+        path="/history" 
+        element={<Layout children={<LikedScreen />} />}
       />
     </Routes>
   );
